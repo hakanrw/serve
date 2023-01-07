@@ -1,0 +1,42 @@
+<html>
+    <head>
+        <title>dart shelf</title>
+    </head>
+    <body>
+        <h3>hello!</h3>
+        <p>welcome to dart shelf</p>
+        <p>time is {{ now() }}</p>
+        <input id="usr" type="text" placeholder="username" /> &nbsp;
+        <input id="mil" type="text" placeholder="email" /> &nbsp;
+        <button onclick="addUser()">submit</button>
+
+        <p><b>users:</b></p>
+        {% for user in users -%}
+            <p>{{ user.name }}: {{ user.email }} </p>
+        {% endfor %}
+
+    </body>
+
+    <script>
+        function enterHandler(event) {
+            if (event.code === "Enter") {  //checks whether the pressed key is "Enter"
+                addUser();
+            }
+        }
+
+        function addUser() {
+            const username = document.getElementById("usr").value;
+            const email = document.getElementById("mil").value;
+            fetch("/api/users", {
+                method: 'PUT',
+                body: JSON.stringify({username, email})
+            }).then((response) => response.text()).then(console.log).then(() => location.reload());
+        }
+
+        var user = document.getElementById("usr");
+        var mail = document.getElementById("mil");
+
+        user.addEventListener("keydown", enterHandler);
+        mail.addEventListener("keydown", enterHandler);
+    </script>
+</html>
